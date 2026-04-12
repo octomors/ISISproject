@@ -1,62 +1,87 @@
-# React + TypeScript + Node.js + MongoDB starter
+# ISISproject
 
-Пустой стартовый проект с разделением на:
-- `client` — React + TypeScript (Vite)
-- `server` — Node.js + TypeScript + Express + MongoDB (Mongoose)
+Веб-платформа коллективной оптимизации кода (React + TypeScript + Node.js + MongoDB).
+
+Реализовано по `TechnicalSpecification.md` для роли **User**:
+- регистрация и логин,
+- публикация задач с платным списанием баллов,
+- отправка решений в чужие задачи,
+- голосование за чужие решения,
+- автоматическое завершение задач по дедлайну,
+- начисление награды победителю,
+- лидерборд по баллам.
 
 ## Требования
-Ниже шаги установки, если на компьютере ничего не настроено.
+- Node.js 20+
+- npm
+- MongoDB (локально или удалённо)
 
-### 1) Установка Node.js и npm
-1. Скачайте LTS-версию Node.js (20+) с официального сайта: https://nodejs.org/
-2. Установите, оставив опцию "Add to PATH" включенной.
-3. Проверьте установку:
-```powershell
-node -v
-npm -v
-```
+## Структура
+- `client` — React + Vite
+- `server` — Express + TypeScript + MongoDB
 
-### 2) Установка MongoDB
-Выберите один из вариантов:
+## 1) Запуск backend
 
-**Вариант A: Локальная MongoDB (рекомендуется для разработки)**
-1. Скачайте MongoDB Community Server: https://www.mongodb.com/try/download/community
-2. Установите, включив опцию установки как сервиса (Service).
-3. Проверьте, что сервис запущен:
-```powershell
-Get-Service MongoDB
-Start-Service MongoDB
-```
-4. Проверьте доступность порта:
-```powershell
-Test-NetConnection 127.0.0.1 -Port 27017
-```
-
-## Локальный запуск
-
-### 1) Frontend
-```powershell
-cd client
-npm install
-npm run dev
-```
-Frontend будет доступен на `http://localhost:5173`.
-
-### 2) Backend
-```powershell
+```bash
 cd server
 npm install
-copy .env.example .env
+cp .env.example .env
+```
+
+Заполни `.env` (минимум `MONGODB_URI` и `JWT_SECRET`):
+
+```env
+PORT=5000
+MONGODB_URI=mongodb://127.0.0.1:27017/isisproject
+JWT_SECRET=change_me_to_long_random_secret
+PUBLISH_COST=10
+PLATFORM_REWARD=50
+INITIAL_POINTS=100
+```
+
+Запуск dev-сервера:
+
+```bash
 npm run dev
 ```
-Backend будет доступен на `http://localhost:5000`.
 
-Проверка API:
+Проверка:
 - `GET http://localhost:5000/api/health`
 
-## Прод-сборка backend
-```powershell
-cd server
-npm run build
-npm start
+## 2) Запуск frontend
+
+```bash
+cd client
+npm install
+cp .env.example .env
+npm run dev
 ```
+
+Frontend откроется на `http://localhost:5173`.
+
+Если backend не на `http://localhost:5000`, укажи в `client/.env`:
+
+```env
+VITE_API_URL=http://localhost:5000
+```
+
+## 3) Что проверить вручную
+1. Зарегистрироваться в UI.
+2. Залогиниться.
+3. Опубликовать задачу (должны списаться `PUBLISH_COST` баллов).
+4. Под другим пользователем отправить решение в эту задачу.
+5. Под третьим пользователем проголосовать за чужое решение.
+6. Дождаться дедлайна (или нажать «Закрыть просроченные задачи»), проверить начисление `PLATFORM_REWARD` победителю.
+7. Проверить лидерборд.
+
+## Полезные API
+- `POST /api/auth/register`
+- `POST /api/auth/login`
+- `GET /api/me`
+- `GET /api/platform-config`
+- `POST /api/tasks`
+- `GET /api/tasks`
+- `POST /api/tasks/:taskId/submissions`
+- `POST /api/tasks/:taskId/votes`
+- `POST /api/tasks/finalize-expired`
+- `GET /api/leaderboard`
