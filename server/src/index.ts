@@ -32,6 +32,13 @@ app.use(
   }),
 )
 
+const authRateLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 20,
+  standardHeaders: true,
+  legacyHeaders: false,
+})
+
 type AuthRequest = Request & { userId?: string }
 
 type TaskStatus = 'active' | 'completed' | 'cancelled'
@@ -133,6 +140,11 @@ function withOptionalAuth(req: AuthRequest, _res: Response, next: NextFunction) 
   next()
 }
 
+function sendInternalError(res: Response, userMessage: string, error: unknown) {
+  console.error(userMessage, error)
+  res.status(500).json({ error: userMessage })
+}
+
 async function finalizeExpiredTasks() {
   const now = new Date()
   const expiredTasks = await Task.find({ status: 'active', deadline: { $lte: now } })
@@ -163,6 +175,14 @@ async function finalizeExpiredTasks() {
       if (currentVotes > bestVotes) {
         winner = candidate
         bestVotes = currentVotes
+        continue
+      }
+
+      if (
+        currentVotes === bestVotes &&
+        candidate.createdAt.getTime() < winner.createdAt.getTime()
+      ) {
+        winner = candidate
       }
     }
 
@@ -250,7 +270,7 @@ app.get('/api/platform-config', (_req, res) => {
   })
 })
 
-app.post('/api/auth/register', async (req, res) => {
+app.post('/api/auth/register', authRateLimiter, async (req, res) => {
   try {
     const username = typeof req.body.username === 'string' ? req.body.username.trim() : ''
     const email = typeof req.body.email === 'string' ? req.body.email.trim().toLowerCase() : ''
@@ -263,6 +283,15 @@ app.post('/api/auth/register', async (req, res) => {
 
     if (password.length < 8) {
       res.status(400).json({ error: 'password must contain at least 8 characters' })
+      return
+    }
+
+    const hasStrongPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^A-Za-z\\d]).{8,}$/.test(password)
+    if (!hasStrongPassword) {
+      res.status(400).json({
+        error:
+          'password must include uppercase, lowercase, number and special character',
+      })
       return
     }
 
@@ -280,11 +309,11 @@ app.post('/api/auth/register', async (req, res) => {
       user: toPublicUser(createdUser),
     })
   } catch (error) {
-    res.status(500).json({ error: 'failed to register user', details: String(error) })
+    sendInternalError(res, 'failed to register user', error)
   }
 })
 
-app.post('/api/auth/login', async (req, res) => {
+app.post('/api/auth/login', authRateLimiter, async (req, res) => {
   try {
     const email = typeof req.body.email === 'string' ? req.body.email.trim().toLowerCase() : ''
     const password = typeof req.body.password === 'string' ? req.body.password : ''
@@ -311,7 +340,7 @@ app.post('/api/auth/login', async (req, res) => {
       user: toPublicUser(user),
     })
   } catch (error) {
-    res.status(500).json({ error: 'failed to login', details: String(error) })
+    sendInternalError(res, 'failed to login', error)
   }
 })
 
@@ -325,7 +354,7 @@ app.get('/api/me', requireAuth, async (req: AuthRequest, res) => {
 
     res.json({ user: toPublicUser(user) })
   } catch (error) {
-    res.status(500).json({ error: 'failed to get user profile', details: String(error) })
+    sendInternalError(res, 'failed to get user profile', error)
   }
 })
 
@@ -373,7 +402,7 @@ app.post('/api/tasks', requireAuth, async (req: AuthRequest, res) => {
     const taskView = await buildTaskView(task._id, req.userId)
     res.status(201).json({ task: taskView, user: toPublicUser(user) })
   } catch (error) {
-    res.status(500).json({ error: 'failed to create task', details: String(error) })
+    sendInternalError(res, 'failed to create task', error)
   }
 })
 
@@ -386,7 +415,7 @@ app.get('/api/tasks', withOptionalAuth, async (req: AuthRequest, res) => {
 
     res.json({ tasks: taskViews.filter(Boolean) })
   } catch (error) {
-    res.status(500).json({ error: 'failed to get tasks', details: String(error) })
+    sendInternalError(res, 'failed to get tasks', error)
   }
 })
 
@@ -423,7 +452,7 @@ app.post('/api/tasks/:taskId/submissions', requireAuth, async (req: AuthRequest,
 
     res.status(201).json({ task: taskView })
   } catch (error) {
-    res.status(500).json({ error: 'failed to create submission', details: String(error) })
+    sendInternalError(res, 'failed to create submission', error)
   }
 })
 
@@ -470,7 +499,7 @@ app.post('/api/tasks/:taskId/votes', requireAuth, async (req: AuthRequest, res) 
     const taskView = await buildTaskView(task._id, req.userId)
     res.json({ task: taskView })
   } catch (error) {
-    res.status(500).json({ error: 'failed to vote', details: String(error) })
+    sendInternalError(res, 'failed to vote', error)
   }
 })
 
@@ -479,7 +508,7 @@ app.post('/api/tasks/finalize-expired', async (_req, res) => {
     await finalizeExpiredTasks()
     res.json({ ok: true })
   } catch (error) {
-    res.status(500).json({ error: 'failed to finalize tasks', details: String(error) })
+    sendInternalError(res, 'failed to finalize tasks', error)
   }
 })
 
@@ -500,7 +529,7 @@ app.get('/api/leaderboard', async (_req, res) => {
       })),
     })
   } catch (error) {
-    res.status(500).json({ error: 'failed to get leaderboard', details: String(error) })
+    sendInternalError(res, 'failed to get leaderboard', error)
   }
 })
 
