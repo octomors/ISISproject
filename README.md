@@ -23,7 +23,7 @@
 ## 1) Запуск backend
 
 ```bash
-cd /home/runner/work/ISISproject/ISISproject/server
+cd server
 npm install
 cp .env.example .env
 ```
@@ -51,7 +51,7 @@ npm run dev
 ## 2) Запуск frontend
 
 ```bash
-cd /home/runner/work/ISISproject/ISISproject/client
+cd client
 npm install
 cp .env.example .env
 npm run dev

@@ -15,6 +15,7 @@ const JWT_SECRET = process.env.JWT_SECRET || ''
 const PUBLISH_COST = Number(process.env.PUBLISH_COST) || 10
 const PLATFORM_REWARD = Number(process.env.PLATFORM_REWARD) || 50
 const INITIAL_POINTS = Number(process.env.INITIAL_POINTS) || 100
+const PASSWORD_COMPLEXITY_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$/
 
 if (!JWT_SECRET) {
   throw new Error('JWT_SECRET is not set')
@@ -143,6 +144,10 @@ function withOptionalAuth(req: AuthRequest, _res: Response, next: NextFunction) 
 function sendInternalError(res: Response, userMessage: string, error: unknown) {
   console.error(userMessage, error)
   res.status(500).json({ error: userMessage })
+}
+
+function isTaskAcceptingActivity(task: { status: string; deadline: Date }) {
+  return task.status === 'active' && task.deadline > new Date()
 }
 
 async function finalizeExpiredTasks() {
@@ -286,8 +291,7 @@ app.post('/api/auth/register', authRateLimiter, async (req, res) => {
       return
     }
 
-    const meetsPasswordComplexityRequirements =
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$/.test(password)
+    const meetsPasswordComplexityRequirements = PASSWORD_COMPLEXITY_REGEX.test(password)
     if (!meetsPasswordComplexityRequirements) {
       res.status(400).json({
         error:
@@ -438,7 +442,7 @@ app.post('/api/tasks/:taskId/submissions', requireAuth, async (req: AuthRequest,
       return
     }
 
-    if (task.status !== 'active' || task.deadline <= new Date()) {
+    if (!isTaskAcceptingActivity(task)) {
       res.status(400).json({ error: 'task is closed for submissions' })
       return
     }
@@ -475,7 +479,7 @@ app.post('/api/tasks/:taskId/votes', requireAuth, async (req: AuthRequest, res) 
       return
     }
 
-    if (task.status !== 'active' || task.deadline <= new Date()) {
+    if (!isTaskAcceptingActivity(task)) {
       res.status(400).json({ error: 'task is closed for voting' })
       return
     }
