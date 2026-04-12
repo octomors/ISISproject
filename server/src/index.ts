@@ -286,7 +286,7 @@ app.post('/api/auth/register', authRateLimiter, async (req, res) => {
       return
     }
 
-    const hasStrongPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^A-Za-z\\d]).{8,}$/.test(password)
+    const hasStrongPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$/.test(password)
     if (!hasStrongPassword) {
       res.status(400).json({
         error:
