@@ -193,6 +193,8 @@ async function buildTaskView(taskId: Types.ObjectId | string, viewerId?: string)
     }
   }
 
+  const taskAuthor = task.author as unknown as { _id: Types.ObjectId; username: string }
+
   return {
     id: String(task._id),
     repositoryUrl: task.repositoryUrl,
@@ -203,22 +205,26 @@ async function buildTaskView(taskId: Types.ObjectId | string, viewerId?: string)
     platformReward: task.platformReward,
     createdAt: task.createdAt,
     author: {
-      id: String((task.author as { _id: Types.ObjectId })._id),
-      username: (task.author as { username: string }).username,
+      id: String(taskAuthor._id),
+      username: taskAuthor.username,
     },
     winnerSubmissionId: task.winnerSubmission ? String(task.winnerSubmission) : null,
     winnerUserId: task.winnerUser ? String(task.winnerUser) : null,
     myVoteSubmissionId,
-    submissions: submissions.map((submission) => ({
-      id: String(submission._id),
-      author: {
-        id: String((submission.author as { _id: Types.ObjectId })._id),
-        username: (submission.author as { username: string }).username,
-      },
-      content: submission.content,
-      createdAt: submission.createdAt,
-      votes: votesBySubmissionId.get(String(submission._id)) ?? 0,
-    })),
+    submissions: submissions.map((submission) => {
+      const submissionAuthor = submission.author as unknown as { _id: Types.ObjectId; username: string }
+
+      return {
+        id: String(submission._id),
+        author: {
+          id: String(submissionAuthor._id),
+          username: submissionAuthor.username,
+        },
+        content: submission.content,
+        createdAt: submission.createdAt,
+        votes: votesBySubmissionId.get(String(submission._id)) ?? 0,
+      }
+    }),
   }
 }
 
