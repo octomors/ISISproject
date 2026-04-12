@@ -5,25 +5,48 @@
 - `server` — Node.js + TypeScript + Express + MongoDB (Mongoose)
 
 ## Требования
-- Node.js 20+
-- npm 10+
-- MongoDB (локально или удалённый инстанс)
+Ниже шаги установки, если на компьютере ничего не настроено.
+
+### 1) Установка Node.js и npm
+1. Скачайте LTS-версию Node.js (20+) с официального сайта: https://nodejs.org/
+2. Установите, оставив опцию "Add to PATH" включенной.
+3. Проверьте установку:
+```powershell
+node -v
+npm -v
+```
+
+### 2) Установка MongoDB
+Выберите один из вариантов:
+
+**Вариант A: Локальная MongoDB (рекомендуется для разработки)**
+1. Скачайте MongoDB Community Server: https://www.mongodb.com/try/download/community
+2. Установите, включив опцию установки как сервиса (Service).
+3. Проверьте, что сервис запущен:
+```powershell
+Get-Service MongoDB
+Start-Service MongoDB
+```
+4. Проверьте доступность порта:
+```powershell
+Test-NetConnection 127.0.0.1 -Port 27017
+```
 
 ## Локальный запуск
 
 ### 1) Frontend
-```bash
-cd /home/runner/work/ISISproject/ISISproject/client
+```powershell
+cd client
 npm install
 npm run dev
 ```
 Frontend будет доступен на `http://localhost:5173`.
 
 ### 2) Backend
-```bash
-cd /home/runner/work/ISISproject/ISISproject/server
+```powershell
+cd server
 npm install
-cp .env.example .env
+copy .env.example .env
 npm run dev
 ```
 Backend будет доступен на `http://localhost:5000`.
@@ -32,8 +55,8 @@ Backend будет доступен на `http://localhost:5000`.
 - `GET http://localhost:5000/api/health`
 
 ## Прод-сборка backend
-```bash
-cd /home/runner/work/ISISproject/ISISproject/server
+```powershell
+cd server
 npm run build
 npm start
 ```
