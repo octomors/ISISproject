@@ -2,6 +2,7 @@ import bcrypt from 'bcryptjs'
 import cors from 'cors'
 import dotenv from 'dotenv'
 import express, { type NextFunction, type Request, type Response } from 'express'
+import { rateLimit } from 'express-rate-limit'
 import jwt from 'jsonwebtoken'
 import mongoose, { Schema, type Types } from 'mongoose'
 
@@ -21,6 +22,15 @@ if (!JWT_SECRET) {
 
 app.use(cors())
 app.use(express.json())
+app.use(
+  '/api',
+  rateLimit({
+    windowMs: 60 * 1000,
+    max: 120,
+    standardHeaders: true,
+    legacyHeaders: false,
+  }),
+)
 
 type AuthRequest = Request & { userId?: string }
 
@@ -251,8 +261,8 @@ app.post('/api/auth/register', async (req, res) => {
       return
     }
 
-    if (password.length < 6) {
-      res.status(400).json({ error: 'password must contain at least 6 characters' })
+    if (password.length < 8) {
+      res.status(400).json({ error: 'password must contain at least 8 characters' })
       return
     }
 
