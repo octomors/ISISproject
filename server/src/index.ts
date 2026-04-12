@@ -168,18 +168,18 @@ async function finalizeExpiredTasks() {
     const votesBySubmissionId = new Map(voteStats.map((item) => [String(item._id), item.votes]))
 
     let winner = submissions[0]
-    let bestVotes = votesBySubmissionId.get(String(winner._id)) ?? 0
+    let highestVoteCount = votesBySubmissionId.get(String(winner._id)) ?? 0
 
     for (const candidate of submissions.slice(1)) {
       const currentVotes = votesBySubmissionId.get(String(candidate._id)) ?? 0
-      if (currentVotes > bestVotes) {
+      if (currentVotes > highestVoteCount) {
         winner = candidate
-        bestVotes = currentVotes
+        highestVoteCount = currentVotes
         continue
       }
 
       if (
-        currentVotes === bestVotes &&
+        currentVotes === highestVoteCount &&
         candidate.createdAt.getTime() < winner.createdAt.getTime()
       ) {
         winner = candidate
@@ -286,8 +286,9 @@ app.post('/api/auth/register', authRateLimiter, async (req, res) => {
       return
     }
 
-    const hasStrongPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$/.test(password)
-    if (!hasStrongPassword) {
+    const meetsPasswordComplexityRequirements =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$/.test(password)
+    if (!meetsPasswordComplexityRequirements) {
       res.status(400).json({
         error:
           'password must include uppercase, lowercase, number and special character',
