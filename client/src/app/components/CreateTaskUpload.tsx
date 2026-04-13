@@ -18,10 +18,10 @@ export function CreateTaskUpload() {
           </div>
           <div className="h-0.5 w-16 bg-indigo-300"></div>
           <div className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-full border border-slate-300 font-mono text-sm text-slate-400">
+            <div className="flex h-8 w-8 items-center justify-center rounded-full border border-[var(--secondary)] font-mono text-sm text-[var(--primary)]">
               2
             </div>
-            <span className="text-sm font-mono text-slate-400">Публикация</span>
+            <span className="text-sm font-mono text-[var(--primary)]">Публикация</span>
           </div>
         </div>
       </div>
