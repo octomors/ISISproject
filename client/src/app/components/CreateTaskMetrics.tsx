@@ -32,30 +32,30 @@ export function CreateTaskMetrics() {
           <div className="flex items-center gap-2">
             <div
               aria-label="Шаг загрузки завершен"
-              className="flex h-8 w-8 items-center justify-center border-2 border-gray-800 bg-white font-mono text-sm"
+              className="flex h-8 w-8 items-center justify-center rounded-full border border-emerald-500 bg-emerald-50 font-mono text-sm text-emerald-700"
             >
               ✓
             </div>
             <span className="text-sm font-mono">[Загрузка]</span>
           </div>
-          <div className="h-0.5 w-16 bg-gray-800"></div>
+          <div className="h-0.5 w-16 bg-indigo-500"></div>
           <div className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center border-2 border-gray-800 bg-gray-800 font-mono text-sm text-white">2</div>
+            <div className="flex h-8 w-8 items-center justify-center rounded-full border border-indigo-600 bg-indigo-600 font-mono text-sm text-white">2</div>
             <span className="text-sm font-mono">[Публикация]</span>
           </div>
         </div>
       </div>
 
-      <div className="mb-6 border-2 border-gray-800 bg-white p-8">
+      <div className="mb-6 rounded-xl border border-slate-200 bg-white p-8 shadow-sm">
         <h1 className="mb-8 text-xl font-mono">[СОЗДАНИЕ ЗАДАЧИ - ПУБЛИКАЦИЯ]</h1>
 
-        <div className="mb-6 space-y-4 border-2 border-gray-400 p-4 text-sm font-mono">
+        <div className="mb-6 space-y-4 rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm font-mono">
           <div>
-            <div className="text-xs text-gray-600">[Репозиторий]</div>
+            <div className="text-xs text-slate-500">[Репозиторий]</div>
             <div className="break-all">{createTaskDraft.repositoryUrl || '—'}</div>
           </div>
           <div>
-            <div className="text-xs text-gray-600">[Описание]</div>
+            <div className="text-xs text-slate-500">[Описание]</div>
             <div className="whitespace-pre-wrap">{createTaskDraft.description || '—'}</div>
           </div>
         </div>
@@ -71,25 +71,25 @@ export function CreateTaskMetrics() {
                 deadline: event.target.value,
               }))
             }
-            className="w-full border-2 border-gray-400 p-3 font-mono text-sm"
+            className="w-full rounded-md border border-slate-300 bg-white p-3 font-mono text-sm outline-none transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100"
           />
         </div>
       </div>
 
-      <div className="mb-6 border-2 border-gray-800 bg-white p-8">
+      <div className="mb-6 rounded-xl border border-slate-200 bg-white p-8 shadow-sm">
         <h2 className="mb-4 text-lg font-mono">[УСЛОВИЯ ПЛАТФОРМЫ ИЗ ТЗ]</h2>
         <div className="space-y-3 text-sm font-mono">
-          <div className="border border-gray-400 p-3">Публикация списывает фиксированную стоимость: {config?.publishCost ?? 0} points.</div>
-          <div className="border border-gray-400 p-3">Награда назначается платформой: {config?.platformReward ?? 0} points.</div>
-          <div className="border border-gray-400 p-3">После дедлайна задача закрывается, победитель определяется по голосам.</div>
-          <div className="border border-gray-400 p-3">При равенстве голосов побеждает более ранняя отправка.</div>
+          <div className="rounded-md border border-slate-200 bg-slate-50 p-3">Публикация списывает фиксированную стоимость: {config?.publishCost ?? 0} points.</div>
+          <div className="rounded-md border border-slate-200 bg-slate-50 p-3">Награда назначается платформой: {config?.platformReward ?? 0} points.</div>
+          <div className="rounded-md border border-slate-200 bg-slate-50 p-3">После дедлайна задача закрывается, победитель определяется по голосам.</div>
+          <div className="rounded-md border border-slate-200 bg-slate-50 p-3">При равенстве голосов побеждает более ранняя отправка.</div>
         </div>
       </div>
 
       <div className="flex gap-4">
         <Link
           to="/create/upload"
-          className="border-2 border-gray-800 px-8 py-4 font-mono transition-colors hover:bg-gray-100"
+          className="rounded-md border border-slate-300 bg-white px-8 py-4 font-mono text-slate-700 transition-colors hover:bg-slate-100"
         >
           [НАЗАД]
         </Link>
@@ -97,7 +97,7 @@ export function CreateTaskMetrics() {
           type="button"
           onClick={() => void handlePublish()}
           disabled={publishing}
-          className="flex flex-1 items-center justify-center gap-3 border-2 border-gray-800 bg-gray-800 px-8 py-4 font-mono text-white transition-colors disabled:opacity-50"
+          className="flex flex-1 items-center justify-center gap-3 rounded-md border border-indigo-600 bg-indigo-600 px-8 py-4 font-mono text-white transition-colors hover:bg-indigo-500 disabled:opacity-50"
         >
           <CheckCircle className="h-5 w-5" />
           {publishing ? '[ПУБЛИКАЦИЯ...]' : '[ОПУБЛИКОВАТЬ ЗАДАЧУ]'}

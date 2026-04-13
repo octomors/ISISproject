@@ -27,50 +27,52 @@ export function TaskDetail() {
         / [Задача #{task.id.slice(-6)}]
       </div>
 
-      <div className="mb-6 border-2 border-gray-800 bg-white p-8">
+      <div className="mb-6 rounded-xl border border-slate-200 bg-white p-8 shadow-sm">
         <div className="mb-6 flex items-start justify-between gap-6">
           <div className="flex-1">
-            <div className="mb-2 text-xs font-mono text-gray-500">[Автор: {task.author.username}]</div>
+            <div className="mb-2 text-xs font-mono text-slate-500">[Автор: {task.author.username}]</div>
             <h1 className="mb-4 break-all text-2xl font-mono">{task.repositoryUrl}</h1>
           </div>
-          <div className="border-2 border-gray-800 px-6 py-2 font-mono">{task.platformReward} баллов</div>
+          <div className="rounded-md border border-amber-300 bg-amber-50 px-6 py-2 font-mono text-amber-700">
+            {task.platformReward} баллов
+          </div>
         </div>
 
-        <div className="grid gap-4 border-2 border-gray-400 p-4 md:grid-cols-4">
+        <div className="grid gap-4 rounded-lg border border-slate-200 bg-slate-50 p-4 md:grid-cols-4">
           <div className="flex items-center gap-2">
-            <Calendar className="h-5 w-5" />
+            <Calendar className="h-5 w-5 text-indigo-500" />
             <div>
-              <div className="text-xs font-mono text-gray-600">[Дедлайн]</div>
+              <div className="text-xs font-mono text-slate-500">[Дедлайн]</div>
               <div className="text-sm font-mono">{new Date(task.deadline).toLocaleString()}</div>
             </div>
           </div>
           <div className="flex items-center gap-2">
-            <Users className="h-5 w-5" />
+            <Users className="h-5 w-5 text-indigo-500" />
             <div>
-              <div className="text-xs font-mono text-gray-600">[Участников]</div>
+              <div className="text-xs font-mono text-slate-500">[Участников]</div>
               <div className="text-sm font-mono">{new Set(task.submissions.map((item) => item.author.id)).size}</div>
             </div>
           </div>
           <div className="flex items-center gap-2">
-            <TrendingUp className="h-5 w-5" />
+            <TrendingUp className="h-5 w-5 text-indigo-500" />
             <div>
-              <div className="text-xs font-mono text-gray-600">[Решений]</div>
+              <div className="text-xs font-mono text-slate-500">[Решений]</div>
               <div className="text-sm font-mono">{task.submissions.length}</div>
             </div>
           </div>
           <div className="flex items-center gap-2">
-            <Award className="h-5 w-5" />
+            <Award className="h-5 w-5 text-indigo-500" />
             <div>
-              <div className="text-xs font-mono text-gray-600">[Статус]</div>
+              <div className="text-xs font-mono text-slate-500">[Статус]</div>
               <div className="text-sm font-mono">[{isTaskActive ? 'active' : task.status}]</div>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="mb-6 border-2 border-gray-800 bg-white p-8">
+      <div className="mb-6 rounded-xl border border-slate-200 bg-white p-8 shadow-sm">
         <h2 className="mb-4 text-lg font-mono">[ОПИСАНИЕ ЗАДАЧИ]</h2>
-        <div className="space-y-4 text-sm font-mono text-gray-700">
+        <div className="space-y-4 text-sm font-mono text-slate-700">
           <p>{task.description}</p>
           <p>
             Публикация оплачивается баллами, победитель определяется по голосам к дедлайну, при равенстве — по
@@ -79,7 +81,7 @@ export function TaskDetail() {
         </div>
       </div>
 
-      <div className="mb-6 border-2 border-gray-800 bg-white p-8">
+      <div className="mb-6 rounded-xl border border-slate-200 bg-white p-8 shadow-sm">
         <h2 className="mb-4 text-lg font-mono">[РЕШЕНИЯ И ГОЛОСОВАНИЕ]</h2>
         <div className="space-y-3">
           {task.submissions.map((submission) => {
@@ -87,13 +89,13 @@ export function TaskDetail() {
               isAuthenticated && isTaskActive && !isTaskAuthor && submission.author.id !== user?.id
 
             return (
-              <div key={submission.id} className="border-2 border-gray-400 p-4">
+              <div key={submission.id} className="rounded-lg border border-slate-200 bg-slate-50 p-4">
                 <div className="mb-2 flex items-start justify-between gap-4">
                   <div className="font-mono text-sm">{submission.author.username}</div>
-                  <div className="font-mono text-xs text-gray-600">голосов: {submission.votes}</div>
+                  <div className="font-mono text-xs text-slate-500">голосов: {submission.votes}</div>
                 </div>
                 <div className="mb-3 whitespace-pre-wrap break-words font-mono text-sm">{submission.content}</div>
-                <div className="mb-3 text-xs font-mono text-gray-500">{new Date(submission.createdAt).toLocaleString()}</div>
+                <div className="mb-3 text-xs font-mono text-slate-500">{new Date(submission.createdAt).toLocaleString()}</div>
 
                 {canVote && (
                   <button
@@ -101,8 +103,8 @@ export function TaskDetail() {
                     onClick={() => void vote(task.id, submission.id)}
                     className={`border-2 px-3 py-1 text-xs font-mono ${
                       task.myVoteSubmissionId === submission.id
-                        ? 'border-gray-800 bg-gray-800 text-white'
-                        : 'border-gray-800'
+                        ? 'border-indigo-600 bg-indigo-600 text-white'
+                        : 'border-indigo-300 bg-white text-indigo-700'
                     }`}
                   >
                     {task.myVoteSubmissionId === submission.id ? 'Мой голос' : 'Голосовать'}
@@ -113,7 +115,7 @@ export function TaskDetail() {
           })}
 
           {task.submissions.length === 0 && (
-            <div className="border-2 border-gray-400 p-4 font-mono text-sm">Решений пока нет.</div>
+            <div className="rounded-lg border border-slate-200 bg-slate-50 p-4 font-mono text-sm">Решений пока нет.</div>
           )}
         </div>
       </div>
@@ -121,14 +123,14 @@ export function TaskDetail() {
       <div className="flex flex-wrap gap-4">
         <Link
           to={`/submit/${task.id}`}
-          className="flex flex-1 items-center justify-center gap-3 border-2 border-gray-800 bg-gray-800 px-8 py-4 font-mono text-white transition-colors hover:bg-gray-700"
+          className="flex flex-1 items-center justify-center gap-3 rounded-md border border-indigo-600 bg-indigo-600 px-8 py-4 font-mono text-white transition-colors hover:bg-indigo-500"
         >
           <Send className="h-5 w-5" />
           [ОТПРАВИТЬ РЕШЕНИЕ]
         </Link>
         <Link
           to={`/leaderboard/${task.id}`}
-          className="flex flex-1 items-center justify-center gap-3 border-2 border-gray-800 px-8 py-4 font-mono transition-colors hover:bg-gray-800 hover:text-white"
+          className="flex flex-1 items-center justify-center gap-3 rounded-md border border-slate-300 bg-white px-8 py-4 font-mono text-slate-700 transition-colors hover:bg-slate-100"
         >
           <TrendingUp className="h-5 w-5" />
           [ЛИДЕРБОРД]
