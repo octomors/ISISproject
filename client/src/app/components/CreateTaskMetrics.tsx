@@ -103,7 +103,7 @@ export function CreateTaskMetrics() {
       <div className="flex gap-4">
         <Link
           to="/create/upload"
-          className="rounded-md border border-[var(--secondary)] bg-[var(--surface)] px-8 py-4 font-mono text-[var(--primary)] transition-colors hover:bg-[var(--surface-hover)]"
+          className="rounded-md border border-[var(--secondary)] bg-[var(--surface)] px-8 py-4 font-mono text-[var(--text)] transition-colors hover:bg-[var(--surface-hover)]"
         >
           Назад
         </Link>
