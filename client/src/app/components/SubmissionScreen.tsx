@@ -79,6 +79,7 @@ export function SubmissionScreen() {
             onChange={(event) => setRepositoryUrl(event.target.value)}
             required
             aria-required="true"
+            aria-label="URL репозитория решения, обязательное поле"
             className="w-full rounded-md border border-slate-300 bg-white p-4 font-mono text-sm outline-none transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100"
             placeholder="https://github.com/username/repo"
           />
@@ -92,10 +93,14 @@ export function SubmissionScreen() {
             id="submission-description"
             value={description}
             onChange={(event) => setDescription(event.target.value)}
+            aria-describedby="submission-description-hint"
             className="min-h-28 w-full rounded-md border border-slate-300 bg-white p-4 font-mono text-sm outline-none transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100"
             placeholder="Кратко опишите подход и ключевые изменения"
             maxLength={3000}
           />
+          <div id="submission-description-hint" className="mt-2 text-xs font-mono text-slate-500">
+            До 3000 символов.
+          </div>
         </div>
 
         <button
