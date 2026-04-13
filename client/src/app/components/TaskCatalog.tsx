@@ -54,7 +54,7 @@ function getTitleMatchScore(title: string, query: string) {
 
   const includeIndex = normalizedTitle.indexOf(normalizedQuery)
   if (includeIndex >= 0) {
-    return 600 - includeIndex
+    return Math.max(0, 600 - includeIndex)
   }
 
   const queryWords = normalizedQuery.split(/\s+/).filter(Boolean)
@@ -226,7 +226,7 @@ export function TaskCatalog() {
                 </div>
                 <div className="flex justify-between text-xs font-mono">
                   <span className="text-slate-500">URL репозитория:</span>
-                  <span className="max-w-52 truncate text-right">{task.repositoryUrl}</span>
+                  <span className="max-w-[13rem] truncate text-right">{task.repositoryUrl}</span>
                 </div>
                 <div className="pt-1 text-xs font-mono text-slate-500">
                   {task.description.slice(0, DESCRIPTION_PREVIEW_LENGTH)}

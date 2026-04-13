@@ -19,6 +19,10 @@ function isValidRepositoryUrl(value: string) {
     if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') {
       return false
     }
+    const allowedHosts = new Set(['github.com', 'www.github.com', 'gitlab.com', 'www.gitlab.com', 'bitbucket.org', 'www.bitbucket.org'])
+    if (!allowedHosts.has(parsed.hostname.toLowerCase())) {
+      return false
+    }
     const segments = parsed.pathname.split('/').filter(Boolean)
     return segments.length >= 2
   } catch {
