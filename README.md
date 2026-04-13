@@ -19,6 +19,12 @@
 ## Структура
 - `client` — React + Vite
 - `server` — Express + TypeScript + MongoDB
+  - `src/routes` — API роуты
+  - `src/services` — прикладная бизнес-логика
+  - `src/models` — схемы и модели MongoDB
+  - `src/middleware` — middleware авторизации и rate-limit
+
+Папка с low-fidelity прототипом UI удалена из репозитория, так как её содержимое уже интегрировано в основной клиент.
 
 ## 1) Запуск backend
 
