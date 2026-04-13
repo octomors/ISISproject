@@ -74,6 +74,8 @@ export function SubmissionScreen() {
           <input
             value={repositoryUrl}
             onChange={(event) => setRepositoryUrl(event.target.value)}
+            required
+            aria-required="true"
             className="w-full rounded-md border border-slate-300 bg-white p-4 font-mono text-sm outline-none transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100"
             placeholder="https://github.com/username/repo"
           />

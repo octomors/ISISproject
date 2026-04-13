@@ -152,6 +152,11 @@ export function registerApiRoutes(app: Express) {
         return
       }
 
+      if (description.length > 3000) {
+        res.status(400).json({ error: 'description must be at most 3000 characters' })
+        return
+      }
+
       if (deadline <= new Date()) {
         res.status(400).json({ error: 'deadline must be in the future' })
         return
