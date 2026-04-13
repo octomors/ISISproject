@@ -45,7 +45,7 @@ export function Layout() {
           </div>
 
           {isAuthenticated ? (
-            <div className="space-y-2 border-2 border-gray-800 p-3">
+            <section aria-label="User account information" className="space-y-2 border-2 border-gray-800 p-3">
               <div className="text-xs font-mono">{user?.username}</div>
               <div className="text-xs font-mono text-gray-600">{user?.email}</div>
               <div className="text-xs font-mono">Баланс: {user?.pointsBalance ?? 0}</div>
@@ -66,7 +66,7 @@ export function Layout() {
                   Выйти
                 </button>
               </div>
-            </div>
+            </section>
           ) : (
             <form onSubmit={handleAuthSubmit} className="w-full max-w-sm space-y-2 border-2 border-gray-800 p-3">
               <div className="text-xs font-mono">{authMode === 'register' ? 'Регистрация' : 'Логин'}</div>

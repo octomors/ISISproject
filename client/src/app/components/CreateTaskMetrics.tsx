@@ -30,7 +30,12 @@ export function CreateTaskMetrics() {
       <div className="mb-12">
         <div className="flex items-center justify-center gap-4">
           <div className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center border-2 border-gray-800 bg-white font-mono text-sm">✓</div>
+            <div
+              aria-label="Шаг загрузки завершен"
+              className="flex h-8 w-8 items-center justify-center border-2 border-gray-800 bg-white font-mono text-sm"
+            >
+              ✓
+            </div>
             <span className="text-sm font-mono">[Загрузка]</span>
           </div>
           <div className="h-0.5 w-16 bg-gray-800"></div>

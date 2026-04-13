@@ -33,7 +33,7 @@ export function SubmissionScreen() {
       await createSubmission(taskId, content)
       setStatus('success')
       setTimeout(() => {
-        navigate(`/task/${id}`)
+        navigate(`/task/${taskId}`)
       }, 1200)
     } catch (requestError) {
       setStatus('idle')

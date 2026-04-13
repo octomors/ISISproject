@@ -2,6 +2,8 @@ import { Filter, Search } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { useAppData } from '../context/AppDataContext'
 
+const DESCRIPTION_PREVIEW_LENGTH = 120
+
 export function TaskCatalog() {
   const { tasks, user, finalizeExpired, loading } = useAppData()
 
@@ -87,7 +89,10 @@ export function TaskCatalog() {
                   <span className="text-gray-600">[Мой голос]:</span>
                   <span>{task.myVoteSubmissionId ? 'Есть' : 'Нет'}</span>
                 </div>
-                <div className="pt-1 text-xs font-mono text-gray-500">{task.description.slice(0, 120)}{task.description.length > 120 ? '…' : ''}</div>
+                <div className="pt-1 text-xs font-mono text-gray-500">
+                  {task.description.slice(0, DESCRIPTION_PREVIEW_LENGTH)}
+                  {task.description.length > DESCRIPTION_PREVIEW_LENGTH ? '…' : ''}
+                </div>
                 {user?.id === task.author.id && <div className="text-xs font-mono text-gray-700">[Ваша задача]</div>}
               </div>
             </div>

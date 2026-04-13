@@ -2,6 +2,8 @@ import { Trophy } from 'lucide-react'
 import { Link, useParams } from 'react-router-dom'
 import { useAppData } from '../context/AppDataContext'
 
+const MAX_GLOBAL_LEADERBOARD_ENTRIES = 8
+
 export function Leaderboard() {
   const { id } = useParams()
   const { tasks, leaderboard, user } = useAppData()
@@ -99,7 +101,7 @@ export function Leaderboard() {
           <div className="border-2 border-gray-800 bg-white p-6">
             <h3 className="mb-4 text-sm font-mono">[ГЛОБАЛЬНЫЙ РЕЙТИНГ]</h3>
             <div className="space-y-2">
-              {leaderboard.slice(0, 8).map((entry) => (
+              {leaderboard.slice(0, MAX_GLOBAL_LEADERBOARD_ENTRIES).map((entry) => (
                 <div
                   key={entry.user.id}
                   className={`flex items-center justify-between border p-2 text-xs font-mono ${
