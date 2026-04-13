@@ -7,7 +7,7 @@ export type PublicUser = {
 
 export type TaskSubmission = {
   id: string
-  content: string
+  repositoryUrl: string
   createdAt: string
   votes: number
   author: {
@@ -18,6 +18,8 @@ export type TaskSubmission = {
 
 export type Task = {
   id: string
+  title: string
+  programmingLanguage: string
   repositoryUrl: string
   description: string
   deadline: string
@@ -47,6 +49,8 @@ export type PlatformConfig = {
 }
 
 export type CreateTaskDraft = {
+  title: string
+  programmingLanguage: string
   repositoryUrl: string
   description: string
   deadline: string

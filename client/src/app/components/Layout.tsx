@@ -38,7 +38,7 @@ export function Layout() {
                   location.pathname === '/' ? 'bg-indigo-100 text-indigo-700' : 'text-slate-700 hover:bg-slate-100'
                 }`}
               >
-                [Каталог]
+                Каталог
               </Link>
               <Link
                 to="/create/upload"
@@ -48,7 +48,7 @@ export function Layout() {
                     : 'text-slate-700 hover:bg-slate-100'
                 }`}
               >
-                [Создать задачу]
+                Создать задачу
               </Link>
             </nav>
           </div>
@@ -150,7 +150,7 @@ export function Layout() {
 
       <footer className="mt-16 border-t border-indigo-200 bg-white/90">
         <div className="mx-auto max-w-7xl px-8 py-6 text-center text-xs font-mono text-slate-500">
-          [Платформа коллективной оптимизации кода]
+          Платформа коллективной оптимизации кода
         </div>
       </footer>
     </div>

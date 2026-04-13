@@ -14,6 +14,8 @@ const userSchema = new Schema(
 const taskSchema = new Schema(
   {
     author: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    title: { type: String, required: true, trim: true, minlength: 2, maxlength: 160 },
+    programmingLanguage: { type: String, required: true, trim: true, minlength: 1, maxlength: 80 },
     repositoryUrl: { type: String, required: true, trim: true },
     description: { type: String, required: true, trim: true, maxlength: 3000 },
     deadline: { type: Date, required: true },
@@ -31,7 +33,8 @@ const submissionSchema = new Schema(
   {
     task: { type: Schema.Types.ObjectId, ref: 'Task', required: true, index: true },
     author: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-    content: { type: String, required: true, trim: true, maxlength: 10000 },
+    content: { type: String, trim: true, maxlength: 10000, default: '' },
+    repositoryUrl: { type: String, required: true, trim: true },
   },
   { timestamps: true },
 )

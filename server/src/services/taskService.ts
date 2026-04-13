@@ -81,6 +81,8 @@ export async function buildTaskView(taskId: Types.ObjectId | string, viewerId?: 
 
   return {
     id: String(task._id),
+    title: task.title || task.repositoryUrl,
+    programmingLanguage: task.programmingLanguage || 'Не указан',
     repositoryUrl: task.repositoryUrl,
     description: task.description,
     deadline: task.deadline,
@@ -104,7 +106,7 @@ export async function buildTaskView(taskId: Types.ObjectId | string, viewerId?: 
           id: String(submissionAuthor._id),
           username: submissionAuthor.username,
         },
-        content: submission.content,
+        repositoryUrl: submission.repositoryUrl || submission.content,
         createdAt: submission.createdAt,
         votes: votesBySubmissionId.get(String(submission._id)) ?? 0,
       }
