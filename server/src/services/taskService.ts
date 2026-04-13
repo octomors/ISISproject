@@ -107,7 +107,7 @@ export async function buildTaskView(taskId: Types.ObjectId | string, viewerId?: 
           username: submissionAuthor.username,
         },
         repositoryUrl: submission.repositoryUrl || submission.content,
-        description: submission.description || submission.content || '',
+        description: submission.description || '',
         createdAt: submission.createdAt,
         votes: votesBySubmissionId.get(String(submission._id)) ?? 0,
       }

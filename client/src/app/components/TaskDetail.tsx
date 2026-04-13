@@ -121,7 +121,7 @@ export function TaskDetail() {
                   </a>
                 </div>
                 {submission.description && (
-                  <div className="mb-3 rounded-md border border-slate-200 bg-white p-3 text-left font-mono text-sm text-slate-700">
+                  <div className="mb-3 rounded-md border border-[var(--border)] bg-[var(--bg)] p-3 text-left font-mono text-sm text-[var(--text)]">
                     {submission.description}
                   </div>
                 )}
