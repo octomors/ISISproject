@@ -13,6 +13,19 @@ function sendInternalError(res: Response, userMessage: string, error: unknown) {
   res.status(500).json({ error: userMessage })
 }
 
+function isValidRepositoryUrl(value: string) {
+  try {
+    const parsed = new URL(value)
+    if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') {
+      return false
+    }
+    const segments = parsed.pathname.split('/').filter(Boolean)
+    return segments.length >= 2
+  } catch {
+    return false
+  }
+}
+
 export function registerApiRoutes(app: Express) {
   const router = Router()
 
@@ -119,12 +132,19 @@ export function registerApiRoutes(app: Express) {
     try {
       await finalizeExpiredTasks()
 
+      const title = typeof req.body.title === 'string' ? req.body.title.trim() : ''
+      const programmingLanguage = typeof req.body.programmingLanguage === 'string' ? req.body.programmingLanguage.trim() : ''
       const repositoryUrl = typeof req.body.repositoryUrl === 'string' ? req.body.repositoryUrl.trim() : ''
       const description = typeof req.body.description === 'string' ? req.body.description.trim() : ''
       const deadline = typeof req.body.deadline === 'string' ? new Date(req.body.deadline) : null
 
-      if (!repositoryUrl || !description || !deadline || Number.isNaN(deadline.getTime())) {
-        res.status(400).json({ error: 'repositoryUrl, description and valid deadline are required' })
+      if (!title || !programmingLanguage || !repositoryUrl || !description || !deadline || Number.isNaN(deadline.getTime())) {
+        res.status(400).json({ error: 'title, programmingLanguage, repositoryUrl, description and valid deadline are required' })
+        return
+      }
+
+      if (!isValidRepositoryUrl(repositoryUrl)) {
+        res.status(400).json({ error: 'repositoryUrl must be a valid repository link' })
         return
       }
 
@@ -149,6 +169,8 @@ export function registerApiRoutes(app: Express) {
 
       const task = await Task.create({
         author: user._id,
+        title,
+        programmingLanguage,
         repositoryUrl,
         description,
         deadline,
@@ -181,10 +203,15 @@ export function registerApiRoutes(app: Express) {
       await finalizeExpiredTasks()
 
       const taskId = req.params.taskId
-      const content = typeof req.body.content === 'string' ? req.body.content.trim() : ''
+      const repositoryUrl = typeof req.body.repositoryUrl === 'string' ? req.body.repositoryUrl.trim() : ''
 
-      if (!content) {
-        res.status(400).json({ error: 'content is required' })
+      if (!repositoryUrl) {
+        res.status(400).json({ error: 'repositoryUrl is required' })
+        return
+      }
+
+      if (!isValidRepositoryUrl(repositoryUrl)) {
+        res.status(400).json({ error: 'repositoryUrl must be a valid repository link' })
         return
       }
 
@@ -204,7 +231,7 @@ export function registerApiRoutes(app: Express) {
         return
       }
 
-      await Submission.create({ task: task._id, author: req.userId, content })
+      await Submission.create({ task: task._id, author: req.userId, repositoryUrl })
       const taskView = await buildTaskView(task._id, req.userId)
 
       res.status(201).json({ task: taskView })

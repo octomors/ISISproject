@@ -8,7 +8,7 @@ export function SubmissionScreen() {
   const navigate = useNavigate()
   const { tasks, createSubmission, setError } = useAppData()
   const task = tasks.find((item) => item.id === id)
-  const [content, setContent] = useState('')
+  const [repositoryUrl, setRepositoryUrl] = useState('')
   const [status, setStatus] = useState<'idle' | 'uploading' | 'success'>('idle')
 
   if (!id || !task) {
@@ -23,14 +23,14 @@ export function SubmissionScreen() {
   const canSubmit = task.status === 'active' && new Date(task.deadline) > new Date()
 
   async function handleSubmit() {
-    if (!content.trim()) {
-      setError('Введите текст решения перед отправкой')
+    if (!repositoryUrl.trim()) {
+      setError('Введите ссылку на репозиторий решения перед отправкой')
       return
     }
 
     try {
       setStatus('uploading')
-      await createSubmission(taskId, content)
+      await createSubmission(taskId, repositoryUrl)
       setStatus('success')
       setTimeout(() => {
         navigate(`/task/${taskId}`)
@@ -45,44 +45,44 @@ export function SubmissionScreen() {
     <div className="mx-auto max-w-4xl px-8 py-12">
       <div className="mb-6 text-xs font-mono text-slate-500">
         <Link to="/" className="hover:underline">
-          [Каталог]
+          Каталог
         </Link>{' '}
         /
         <Link to={`/task/${id}`} className="hover:underline">
           {' '}
-          [Задача]
+          Задача
         </Link>{' '}
-        / [Отправка решения]
+        / Отправка решения
       </div>
 
       <div className="mb-8 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
         <div className="flex items-center justify-between gap-4">
           <div>
-            <div className="mb-1 text-xs font-mono text-slate-500">[ЗАДАЧА]</div>
-            <div className="font-mono">{task.repositoryUrl}</div>
+            <div className="mb-1 text-xs font-mono text-slate-500">Задача</div>
+            <div className="font-mono">{task.title}</div>
           </div>
-          <div className="text-xs font-mono text-slate-500">[Дедлайн: {new Date(task.deadline).toLocaleString()}]</div>
+          <div className="text-xs font-mono text-slate-500">Дедлайн: {new Date(task.deadline).toLocaleString()}</div>
         </div>
       </div>
 
       <div className="mb-6 rounded-xl border border-slate-200 bg-white p-8 shadow-sm">
-        <h1 className="mb-6 text-xl font-mono">[ЗАГРУЗКА РЕШЕНИЯ]</h1>
+        <h1 className="mb-6 text-xl font-mono">Отправка решения</h1>
 
         <div className="mb-6">
-          <label className="mb-3 block text-sm font-mono">[Патч / Архив / Описание оптимизации]</label>
+          <label className="mb-3 block text-sm font-mono">Ссылка на репозиторий решения</label>
           <div className="cursor-pointer rounded-lg border border-dashed border-slate-300 bg-slate-50 p-8 text-center transition-colors hover:border-indigo-400">
             <Upload className="mx-auto mb-4 h-10 w-10 text-indigo-400" />
-            <div className="text-sm font-mono text-slate-600">API сейчас принимает текстовое содержимое решения.</div>
+            <div className="text-sm font-mono text-slate-600">Принимается только ссылка на репозиторий.</div>
           </div>
         </div>
 
         <div className="mb-6">
-          <label className="mb-3 block text-sm font-mono">[Содержимое решения]</label>
-          <textarea
-            value={content}
-            onChange={(event) => setContent(event.target.value)}
-            className="min-h-40 w-full rounded-md border border-slate-300 bg-white p-4 font-mono text-sm outline-none transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100"
-            placeholder="Опишите ваш патч, вставьте diff или ссылку на архив"
+          <label className="mb-3 block text-sm font-mono">URL репозитория</label>
+          <input
+            value={repositoryUrl}
+            onChange={(event) => setRepositoryUrl(event.target.value)}
+            className="w-full rounded-md border border-slate-300 bg-white p-4 font-mono text-sm outline-none transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100"
+            placeholder="https://github.com/username/repo"
           />
         </div>
 
@@ -92,17 +92,17 @@ export function SubmissionScreen() {
           disabled={!canSubmit || status !== 'idle'}
           className="w-full rounded-md border border-indigo-600 bg-indigo-600 px-8 py-4 font-mono text-white transition-colors hover:bg-indigo-500 disabled:cursor-not-allowed disabled:opacity-50"
         >
-          {!canSubmit ? '[ЗАДАЧА ЗАКРЫТА]' : status === 'uploading' ? '[ОТПРАВКА...]' : status === 'success' ? '[ОТПРАВЛЕНО]' : '[ОТПРАВИТЬ РЕШЕНИЕ]'}
+          {!canSubmit ? 'Задача закрыта' : status === 'uploading' ? 'Отправка...' : status === 'success' ? 'Отправлено' : 'Отправить решение'}
         </button>
       </div>
 
       {status !== 'idle' && (
         <div className="rounded-xl border border-slate-200 bg-white p-8 shadow-sm">
-          <h2 className="mb-4 text-lg font-mono">[СТАТУС]</h2>
+          <h2 className="mb-4 text-lg font-mono">Статус</h2>
           <div className="space-y-3">
             <div className="flex items-center gap-3 rounded-lg border border-slate-200 bg-slate-50 p-4">
               {status === 'uploading' ? <Clock className="h-6 w-6 animate-pulse" /> : <CheckCircle className="h-6 w-6" />}
-              <div className="font-mono text-sm">Загрузка и регистрация решения</div>
+              <div className="font-mono text-sm">Проверка и регистрация ссылки на решение</div>
             </div>
             {status === 'success' && (
               <div className="flex items-center gap-3 rounded-lg border border-emerald-200 bg-emerald-50 p-4">

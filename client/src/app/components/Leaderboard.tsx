@@ -28,14 +28,14 @@ export function Leaderboard() {
     <div className="mx-auto max-w-7xl px-8 py-12">
       <div className="mb-6 text-xs font-mono text-slate-500">
         <Link to="/" className="hover:underline">
-          [Каталог]
+          Каталог
         </Link>{' '}
         /
         <Link to={`/task/${id}`} className="hover:underline">
           {' '}
-          [Задача]
+          Задача
         </Link>{' '}
-        / [Лидерборд]
+        / Лидерборд
       </div>
 
       <div className="grid gap-6 lg:grid-cols-3">
@@ -45,8 +45,9 @@ export function Leaderboard() {
               <div className="flex items-center gap-3">
                 <Trophy className="h-8 w-8 text-amber-500" />
                 <div>
-                  <h1 className="text-xl font-mono">[ЛИДЕРБОРД ЗАДАЧИ]</h1>
-                  <div className="text-xs font-mono break-all text-slate-500">{task.repositoryUrl}</div>
+                  <h1 className="text-xl font-mono">Лидерборд задачи</h1>
+                  <div className="text-xs font-mono text-slate-700">{task.title}</div>
+                  <div className="break-all text-xs font-mono text-slate-500">{task.repositoryUrl}</div>
                 </div>
               </div>
               <div className="text-right">
@@ -58,10 +59,10 @@ export function Leaderboard() {
 
           <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
             <div className="grid grid-cols-12 gap-4 border-b border-slate-200 bg-slate-50 p-4 text-xs font-mono text-slate-500">
-              <div className="col-span-1 text-center">[#]</div>
-              <div className="col-span-4">[Участник]</div>
-              <div className="col-span-3 text-center">[Голоса]</div>
-              <div className="col-span-4 text-center">[Время отправки]</div>
+              <div className="col-span-1 text-center">#</div>
+              <div className="col-span-4">Участник</div>
+              <div className="col-span-3 text-center">Голоса</div>
+              <div className="col-span-4 text-center">Время отправки</div>
             </div>
 
             {taskRanking.map((entry, index) => (
@@ -81,7 +82,7 @@ export function Leaderboard() {
 
         <div className="space-y-6">
           <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-            <h3 className="mb-4 text-sm font-mono">[СТАТИСТИКА ЗАДАЧИ]</h3>
+            <h3 className="mb-4 text-sm font-mono">Статистика задачи</h3>
             <div className="space-y-4">
               <div className="border-b border-slate-200 pb-3">
                 <div className="mb-1 text-xs font-mono text-slate-500">Всего участников</div>
@@ -99,7 +100,7 @@ export function Leaderboard() {
           </div>
 
           <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-            <h3 className="mb-4 text-sm font-mono">[ГЛОБАЛЬНЫЙ РЕЙТИНГ]</h3>
+            <h3 className="mb-4 text-sm font-mono">Глобальный рейтинг</h3>
             <div className="space-y-2">
               {leaderboard.slice(0, MAX_GLOBAL_LEADERBOARD_ENTRIES).map((entry) => (
                 <div
