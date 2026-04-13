@@ -19,6 +19,7 @@ export function SubmissionScreen() {
     )
   }
 
+  const taskId = task.id
   const canSubmit = task.status === 'active' && new Date(task.deadline) > new Date()
 
   async function handleSubmit() {
@@ -29,7 +30,7 @@ export function SubmissionScreen() {
 
     try {
       setStatus('uploading')
-      await createSubmission(id, content)
+      await createSubmission(taskId, content)
       setStatus('success')
       setTimeout(() => {
         navigate(`/task/${id}`)

@@ -1,4 +1,5 @@
-import { createContext, useContext, useEffect, useMemo, useState, type PropsWithChildren } from 'react'
+/* eslint-disable react-refresh/only-export-components */
+import { createContext, useContext, useEffect, useState, type PropsWithChildren } from 'react'
 import { apiRequest, TOKEN_STORAGE_KEY } from '../api'
 import type { CreateTaskDraft, LeaderboardItem, PlatformConfig, PublicUser, Task } from '../types'
 
@@ -190,30 +191,27 @@ export function AppDataProvider({ children }: PropsWithChildren) {
     setCreateTaskDraftState((prev) => updater(prev))
   }
 
-  const value = useMemo<AppDataContextValue>(
-    () => ({
-      token,
-      user,
-      tasks,
-      leaderboard,
-      config,
-      createTaskDraft,
-      error,
-      loading,
-      isAuthenticated,
-      setError,
-      setCreateTaskDraft,
-      reload,
-      login,
-      register,
-      logout,
-      createTask,
-      createSubmission,
-      vote,
-      finalizeExpired,
-    }),
-    [token, user, tasks, leaderboard, config, createTaskDraft, error, loading, isAuthenticated],
-  )
+  const value: AppDataContextValue = {
+    token,
+    user,
+    tasks,
+    leaderboard,
+    config,
+    createTaskDraft,
+    error,
+    loading,
+    isAuthenticated,
+    setError,
+    setCreateTaskDraft,
+    reload,
+    login,
+    register,
+    logout,
+    createTask,
+    createSubmission,
+    vote,
+    finalizeExpired,
+  }
 
   return <AppDataContext.Provider value={value}>{children}</AppDataContext.Provider>
 }
