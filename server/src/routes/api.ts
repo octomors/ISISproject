@@ -225,6 +225,11 @@ export function registerApiRoutes(app: Express) {
         return
       }
 
+      if (description.length > 3000) {
+        res.status(400).json({ error: 'description must be at most 3000 characters' })
+        return
+      }
+
       const task = await Task.findById(taskId)
       if (!task) {
         res.status(404).json({ error: 'task not found' })

@@ -70,8 +70,11 @@ export function SubmissionScreen() {
         <h1 className="mb-6 text-xl font-mono">Отправка решения</h1>
 
         <div className="mb-6">
-          <label className="mb-3 block text-sm font-mono">URL репозитория решения *</label>
+          <label htmlFor="submission-repository-url" className="mb-3 block text-sm font-mono">
+            URL репозитория решения *
+          </label>
           <input
+            id="submission-repository-url"
             value={repositoryUrl}
             onChange={(event) => setRepositoryUrl(event.target.value)}
             required
@@ -82,8 +85,11 @@ export function SubmissionScreen() {
         </div>
 
         <div className="mb-6">
-          <label className="mb-3 block text-sm font-mono">Текстовое описание решения (необязательно)</label>
+          <label htmlFor="submission-description" className="mb-3 block text-sm font-mono">
+            Текстовое описание решения (необязательно)
+          </label>
           <textarea
+            id="submission-description"
             value={description}
             onChange={(event) => setDescription(event.target.value)}
             className="min-h-28 w-full rounded-md border border-slate-300 bg-white p-4 font-mono text-sm outline-none transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100"
