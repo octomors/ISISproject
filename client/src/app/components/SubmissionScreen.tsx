@@ -1,4 +1,4 @@
-import { CheckCircle, Clock, Upload } from 'lucide-react'
+import { CheckCircle, Clock } from 'lucide-react'
 import { useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useAppData } from '../context/AppDataContext'
@@ -9,6 +9,7 @@ export function SubmissionScreen() {
   const { tasks, createSubmission, setError } = useAppData()
   const task = tasks.find((item) => item.id === id)
   const [repositoryUrl, setRepositoryUrl] = useState('')
+  const [description, setDescription] = useState('')
   const [status, setStatus] = useState<'idle' | 'uploading' | 'success'>('idle')
 
   if (!id || !task) {
@@ -30,7 +31,7 @@ export function SubmissionScreen() {
 
     try {
       setStatus('uploading')
-      await createSubmission(taskId, repositoryUrl)
+      await createSubmission(taskId, repositoryUrl, description)
       setStatus('success')
       setTimeout(() => {
         navigate(`/task/${taskId}`)
@@ -69,20 +70,23 @@ export function SubmissionScreen() {
         <h1 className="mb-6 text-xl font-mono">Отправка решения</h1>
 
         <div className="mb-6">
-          <label className="mb-3 block text-sm font-mono">Ссылка на репозиторий решения</label>
-          <div className="cursor-pointer rounded-lg border border-dashed border-slate-300 bg-slate-50 p-8 text-center transition-colors hover:border-indigo-400">
-            <Upload className="mx-auto mb-4 h-10 w-10 text-indigo-400" />
-            <div className="text-sm font-mono text-slate-600">Принимается только ссылка на репозиторий.</div>
-          </div>
-        </div>
-
-        <div className="mb-6">
-          <label className="mb-3 block text-sm font-mono">URL репозитория</label>
+          <label className="mb-3 block text-sm font-mono">URL репозитория решения *</label>
           <input
             value={repositoryUrl}
             onChange={(event) => setRepositoryUrl(event.target.value)}
             className="w-full rounded-md border border-slate-300 bg-white p-4 font-mono text-sm outline-none transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100"
             placeholder="https://github.com/username/repo"
+          />
+        </div>
+
+        <div className="mb-6">
+          <label className="mb-3 block text-sm font-mono">Текстовое описание решения (необязательно)</label>
+          <textarea
+            value={description}
+            onChange={(event) => setDescription(event.target.value)}
+            className="min-h-28 w-full rounded-md border border-slate-300 bg-white p-4 font-mono text-sm outline-none transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100"
+            placeholder="Кратко опишите подход и ключевые изменения"
+            maxLength={3000}
           />
         </div>
 

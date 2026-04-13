@@ -33,6 +33,7 @@ const submissionSchema = new Schema(
   {
     task: { type: Schema.Types.ObjectId, ref: 'Task', required: true, index: true },
     author: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    description: { type: String, trim: true, maxlength: 3000, default: '' },
     content: { type: String, trim: true, maxlength: 10000, default: '' },
     repositoryUrl: { type: String, required: true, trim: true },
   },

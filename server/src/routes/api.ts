@@ -208,6 +208,7 @@ export function registerApiRoutes(app: Express) {
 
       const taskId = req.params.taskId
       const repositoryUrl = typeof req.body.repositoryUrl === 'string' ? req.body.repositoryUrl.trim() : ''
+      const description = typeof req.body.description === 'string' ? req.body.description.trim() : ''
 
       if (!repositoryUrl) {
         res.status(400).json({ error: 'repositoryUrl is required' })
@@ -235,7 +236,7 @@ export function registerApiRoutes(app: Express) {
         return
       }
 
-      await Submission.create({ task: task._id, author: req.userId, repositoryUrl })
+      await Submission.create({ task: task._id, author: req.userId, repositoryUrl, description })
       const taskView = await buildTaskView(task._id, req.userId)
 
       res.status(201).json({ task: taskView })

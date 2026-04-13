@@ -120,6 +120,11 @@ export function TaskDetail() {
                     {submission.repositoryUrl}
                   </a>
                 </div>
+                {submission.description && (
+                  <div className="mb-3 rounded-md border border-slate-200 bg-white p-3 text-left font-mono text-sm text-slate-700">
+                    {submission.description}
+                  </div>
+                )}
                 <div className="mb-3 text-xs font-mono text-slate-500">{new Date(submission.createdAt).toLocaleString()}</div>
 
                 {canVote && (

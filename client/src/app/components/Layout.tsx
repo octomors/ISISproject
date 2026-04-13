@@ -4,7 +4,7 @@ import { useAppData } from '../context/AppDataContext'
 
 export function Layout() {
   const location = useLocation()
-  const { user, config, isAuthenticated, login, register, logout, reload, loading, error, setError } = useAppData()
+  const { user, isAuthenticated, login, register, logout, reload, loading, error, setError } = useAppData()
   const [authMode, setAuthMode] = useState<'login' | 'register'>('login')
   const [authForm, setAuthForm] = useState({ username: '', email: '', password: '' })
 
@@ -134,12 +134,6 @@ export function Layout() {
             </form>
           )}
         </div>
-
-        {config && (
-          <div className="mx-auto max-w-7xl border-t border-indigo-100 px-8 py-2 text-xs font-mono text-slate-600">
-            publish_cost={config.publishCost} • platform_reward={config.platformReward} • initial_points={config.initialPoints}
-          </div>
-        )}
 
         {error && <div className="mx-auto max-w-7xl px-8 pb-3 text-xs font-mono text-rose-700">Ошибка: {error}</div>}
       </header>

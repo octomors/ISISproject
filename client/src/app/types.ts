@@ -8,6 +8,7 @@ export type PublicUser = {
 export type TaskSubmission = {
   id: string
   repositoryUrl: string
+  description: string
   createdAt: string
   votes: number
   author: {

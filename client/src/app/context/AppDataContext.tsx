@@ -20,7 +20,7 @@ type AppDataContextValue = {
   register: (username: string, email: string, password: string) => Promise<void>
   logout: () => void
   createTask: (payload: CreateTaskDraft) => Promise<string>
-  createSubmission: (taskId: string, repositoryUrl: string) => Promise<void>
+  createSubmission: (taskId: string, repositoryUrl: string, description?: string) => Promise<void>
   vote: (taskId: string, submissionId: string) => Promise<void>
   finalizeExpired: () => Promise<void>
 }
@@ -147,20 +147,20 @@ export function AppDataProvider({ children }: PropsWithChildren) {
     return response.task.id
   }
 
-  async function createSubmission(taskId: string, repositoryUrl: string) {
+  async function createSubmission(taskId: string, repositoryUrl: string, description = '') {
     if (!token) {
       throw new Error('Для отправки решения требуется авторизация')
     }
 
     setError('')
     await apiRequest<{ task: Task }>(
-      `/api/tasks/${taskId}/submissions`,
-      {
-        method: 'POST',
-        body: JSON.stringify({ repositoryUrl }),
-      },
-      token,
-    )
+        `/api/tasks/${taskId}/submissions`,
+        {
+          method: 'POST',
+          body: JSON.stringify({ repositoryUrl, description }),
+        },
+        token,
+      )
 
     await reload(token)
   }
