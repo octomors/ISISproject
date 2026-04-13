@@ -1,8 +1,11 @@
 import { createBrowserRouter } from 'react-router-dom'
+import { AuthLogin } from './components/AuthLogin'
+import { AuthRegister } from './components/AuthRegister'
 import { CreateTaskMetrics } from './components/CreateTaskMetrics'
 import { CreateTaskUpload } from './components/CreateTaskUpload'
 import { Layout } from './components/Layout'
 import { Leaderboard } from './components/Leaderboard'
+import { Profile } from './components/Profile'
 import { SubmissionScreen } from './components/SubmissionScreen'
 import { TaskCatalog } from './components/TaskCatalog'
 import { TaskDetail } from './components/TaskDetail'
@@ -18,6 +21,9 @@ export const router = createBrowserRouter([
       { path: 'create/upload', Component: CreateTaskUpload },
       { path: 'create/metrics', Component: CreateTaskMetrics },
       { path: 'leaderboard/:id', Component: Leaderboard },
+      { path: 'login', Component: AuthLogin },
+      { path: 'register', Component: AuthRegister },
+      { path: 'profile', Component: Profile },
     ],
   },
 ])

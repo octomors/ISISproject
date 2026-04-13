@@ -1,33 +1,17 @@
-import { useState, type FormEvent } from 'react'
 import { Link, Outlet, useLocation } from 'react-router-dom'
 import { useAppData } from '../context/AppDataContext'
 
 export function Layout() {
   const location = useLocation()
-  const { user, isAuthenticated, login, register, logout, reload, loading, error, setError } = useAppData()
-  const [authMode, setAuthMode] = useState<'login' | 'register'>('login')
-  const [authForm, setAuthForm] = useState({ username: '', email: '', password: '' })
-
-  async function handleAuthSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault()
-    try {
-      if (authMode === 'register') {
-        await register(authForm.username, authForm.email, authForm.password)
-      } else {
-        await login(authForm.email, authForm.password)
-      }
-    } catch (requestError) {
-      setError(requestError instanceof Error ? requestError.message : 'Ошибка авторизации')
-    }
-  }
+  const { isAuthenticated, error, setError } = useAppData()
 
   return (
-    <div className="min-h-screen bg-slate-100 text-slate-900">
-      <header className="border-b border-indigo-200 bg-gradient-to-r from-indigo-50 via-white to-cyan-50 shadow-sm">
+    <div className="min-h-screen bg-[var(--background)] text-[var(--text)]">
+      <header className="border-b border-[var(--secondary)] bg-[var(--surface)] shadow-sm">
         <div className="mx-auto flex max-w-7xl flex-wrap items-start justify-between gap-6 px-8 py-6">
           <div className="flex items-center gap-8">
-            <div className="flex h-9 w-32 items-center justify-center rounded-md border border-indigo-500 bg-indigo-600 shadow-sm">
-              <Link to="/" className="text-sm font-mono text-white">
+            <div className="flex h-9 w-32 items-center justify-center rounded-md border border-[var(--accent)] bg-[var(--secondary)] shadow-sm">
+              <Link to="/" className="text-sm font-mono text-[var(--text)]">
                 ISISproject
               </Link>
             </div>
@@ -35,7 +19,9 @@ export function Layout() {
               <Link
                 to="/"
                 className={`rounded-md px-2 py-1 text-sm font-mono transition-colors ${
-                  location.pathname === '/' ? 'bg-indigo-100 text-indigo-700' : 'text-slate-700 hover:bg-slate-100'
+                  location.pathname === '/'
+                    ? 'bg-[var(--secondary)] text-[var(--text)]'
+                    : 'text-[var(--primary)] hover:bg-[var(--surface-hover)]'
                 }`}
               >
                 Каталог
@@ -44,8 +30,8 @@ export function Layout() {
                 to="/create/upload"
                 className={`rounded-md px-2 py-1 text-sm font-mono transition-colors ${
                   location.pathname.includes('/create')
-                    ? 'bg-indigo-100 text-indigo-700'
-                    : 'text-slate-700 hover:bg-slate-100'
+                    ? 'bg-[var(--secondary)] text-[var(--text)]'
+                    : 'text-[var(--primary)] hover:bg-[var(--surface-hover)]'
                 }`}
               >
                 Создать задачу
@@ -54,96 +40,46 @@ export function Layout() {
           </div>
 
           {isAuthenticated ? (
-            <section
-              aria-label="User account information"
-              className="space-y-2 rounded-lg border border-indigo-200 bg-white/90 p-3 shadow-sm"
+            <Link
+              to="/profile"
+              className={`rounded-md border px-4 py-2 text-xs font-mono transition-colors ${
+                location.pathname === '/profile'
+                  ? 'border-[var(--accent)] bg-[var(--secondary)] text-[var(--text)]'
+                  : 'border-[var(--secondary)] bg-[var(--surface)] text-[var(--primary)] hover:bg-[var(--surface-hover)]'
+              }`}
+              onClick={() => setError('')}
             >
-              <div className="text-xs font-mono text-slate-800">{user?.username}</div>
-              <div className="text-xs font-mono text-slate-500">{user?.email}</div>
-              <div className="text-xs font-mono text-slate-800">Баланс: {user?.pointsBalance ?? 0}</div>
-              <div className="flex gap-2">
-                <button
-                  type="button"
-                  onClick={() => void reload()}
-                  disabled={loading}
-                  className="rounded-md border border-cyan-300 bg-cyan-50 px-2 py-1 text-xs font-mono text-cyan-700 transition-colors hover:bg-cyan-100 disabled:opacity-60"
-                >
-                  Обновить
-                </button>
-                <button
-                  type="button"
-                  onClick={logout}
-                  className="rounded-md border border-rose-300 bg-rose-50 px-2 py-1 text-xs font-mono text-rose-700 transition-colors hover:bg-rose-100"
-                >
-                  Выйти
-                </button>
-              </div>
-            </section>
+              Личный кабинет
+            </Link>
           ) : (
-            <form
-              onSubmit={handleAuthSubmit}
-              className="w-full max-w-sm space-y-2 rounded-lg border border-indigo-200 bg-white/90 p-3 shadow-sm"
-            >
-              <div className="text-xs font-mono text-slate-700">
-                {authMode === 'register' ? 'Регистрация' : 'Email'}
-              </div>
-              {authMode === 'register' && (
-                <input
-                  required
-                  placeholder="Username"
-                  value={authForm.username}
-                  onChange={(event) => setAuthForm((prev) => ({ ...prev, username: event.target.value }))}
-                  className="w-full rounded-md border border-slate-300 bg-white px-2 py-1 text-xs font-mono text-slate-800 outline-none transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100"
-                />
-              )}
-              <input
-                required
-                type="email"
-                placeholder="Email"
-                value={authForm.email}
-                onChange={(event) => setAuthForm((prev) => ({ ...prev, email: event.target.value }))}
-                className="w-full rounded-md border border-slate-300 bg-white px-2 py-1 text-xs font-mono text-slate-800 outline-none transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100"
-              />
-              <input
-                required
-                type="password"
-                placeholder="Password"
-                value={authForm.password}
-                onChange={(event) => setAuthForm((prev) => ({ ...prev, password: event.target.value }))}
-                className="w-full rounded-md border border-slate-300 bg-white px-2 py-1 text-xs font-mono text-slate-800 outline-none transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100"
-              />
-              <div className="flex gap-2">
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="rounded-md border border-indigo-600 bg-indigo-600 px-2 py-1 text-xs font-mono text-white transition-colors hover:bg-indigo-500 disabled:opacity-60"
-                >
-                  {authMode === 'register' ? 'Создать' : 'Войти'}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setAuthMode((prev) => (prev === 'register' ? 'login' : 'register'))
-                    setError('')
-                  }}
-                  className="rounded-md border border-slate-300 bg-slate-50 px-2 py-1 text-xs font-mono text-slate-700 transition-colors hover:bg-slate-100"
-                >
-                  {authMode === 'register' ? 'Есть аккаунт' : 'Нет аккаунта'}
-                </button>
-              </div>
-            </form>
+            <div className="flex gap-2">
+              <Link
+                to="/login"
+                className="rounded-md border border-[var(--secondary)] bg-[var(--surface)] px-4 py-2 text-xs font-mono text-[var(--primary)] transition-colors hover:bg-[var(--surface-hover)]"
+                onClick={() => setError('')}
+              >
+                Войти
+              </Link>
+              <Link
+                to="/register"
+                className="rounded-md border border-[var(--accent)] bg-[var(--secondary)] px-4 py-2 text-xs font-mono text-[var(--text)] transition-colors hover:bg-[var(--accent)]"
+                onClick={() => setError('')}
+              >
+                Зарегистрироваться
+              </Link>
+            </div>
           )}
         </div>
 
-        {error && <div className="mx-auto max-w-7xl px-8 pb-3 text-xs font-mono text-rose-700">Ошибка: {error}</div>}
+        {error && <div className="mx-auto max-w-7xl px-8 pb-3 text-xs font-mono text-red-400">Ошибка: {error}</div>}
       </header>
 
       <main>
         <Outlet />
       </main>
 
-      <footer className="mt-16 border-t border-indigo-200 bg-white/90">
-        <div className="mx-auto max-w-7xl px-8 py-6 text-center text-xs font-mono text-slate-500">
+      <footer className="mt-16 border-t border-[var(--secondary)] bg-[var(--surface)]">
+        <div className="mx-auto max-w-7xl px-8 py-6 text-center text-xs font-mono text-[var(--primary)]">
           Платформа коллективной оптимизации кода
         </div>
       </footer>
