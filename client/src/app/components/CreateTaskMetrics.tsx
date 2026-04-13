@@ -52,24 +52,24 @@ export function CreateTaskMetrics() {
         </div>
       </div>
 
-      <div className="mb-6 rounded-xl border border-slate-200 bg-white p-8 shadow-sm">
+      <div className="mb-6 rounded-xl border border-[var(--secondary)] bg-[var(--surface)] p-8 shadow-sm">
         <h1 className="mb-8 text-xl font-mono">Создание задачи — публикация</h1>
 
-        <div className="mb-6 space-y-4 rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm font-mono">
+        <div className="mb-6 space-y-4 rounded-lg border border-[var(--secondary)] bg-[var(--background)] p-4 text-sm font-mono">
           <div>
-            <div className="text-xs text-slate-500">Название</div>
+            <div className="text-xs text-[var(--primary)]">Название</div>
             <div className="break-all">{createTaskDraft.title || '—'}</div>
           </div>
           <div>
-            <div className="text-xs text-slate-500">Язык программирования</div>
+            <div className="text-xs text-[var(--primary)]">Язык программирования</div>
             <div className="break-all">{createTaskDraft.programmingLanguage || '—'}</div>
           </div>
           <div>
-            <div className="text-xs text-slate-500">Репозиторий</div>
+            <div className="text-xs text-[var(--primary)]">Репозиторий</div>
             <div className="break-all">{createTaskDraft.repositoryUrl || '—'}</div>
           </div>
           <div>
-            <div className="text-xs text-slate-500">Описание</div>
+            <div className="text-xs text-[var(--primary)]">Описание</div>
             <div className="whitespace-pre-wrap">{createTaskDraft.description || '—'}</div>
           </div>
         </div>
@@ -85,25 +85,25 @@ export function CreateTaskMetrics() {
                 deadline: event.target.value,
               }))
             }
-            className="w-full rounded-md border border-slate-300 bg-white p-3 font-mono text-sm outline-none transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100"
+            className="w-full rounded-md border border-[var(--secondary)] bg-[var(--background)] p-3 font-mono text-sm text-[var(--text)] outline-none transition focus:border-[var(--accent)] focus:ring-2 focus:ring-[var(--surface-hover)]"
           />
         </div>
       </div>
 
-      <div className="mb-6 rounded-xl border border-slate-200 bg-white p-8 shadow-sm">
+      <div className="mb-6 rounded-xl border border-[var(--secondary)] bg-[var(--surface)] p-8 shadow-sm">
         <h2 className="mb-4 text-lg font-mono">Условия платформы из ТЗ</h2>
         <div className="space-y-3 text-sm font-mono">
-          <div className="rounded-md border border-slate-200 bg-slate-50 p-3">Публикация списывает фиксированную стоимость: {config?.publishCost ?? 0} points.</div>
-          <div className="rounded-md border border-slate-200 bg-slate-50 p-3">Награда назначается платформой: {config?.platformReward ?? 0} points.</div>
-          <div className="rounded-md border border-slate-200 bg-slate-50 p-3">После дедлайна задача закрывается, победитель определяется по голосам.</div>
-          <div className="rounded-md border border-slate-200 bg-slate-50 p-3">При равенстве голосов побеждает более ранняя отправка.</div>
+          <div className="rounded-md border border-[var(--secondary)] bg-[var(--background)] p-3">Публикация списывает фиксированную стоимость: {config?.publishCost ?? 0} points.</div>
+          <div className="rounded-md border border-[var(--secondary)] bg-[var(--background)] p-3">Награда назначается платформой: {config?.platformReward ?? 0} points.</div>
+          <div className="rounded-md border border-[var(--secondary)] bg-[var(--background)] p-3">После дедлайна задача закрывается, победитель определяется по голосам.</div>
+          <div className="rounded-md border border-[var(--secondary)] bg-[var(--background)] p-3">При равенстве голосов побеждает более ранняя отправка.</div>
         </div>
       </div>
 
       <div className="flex gap-4">
         <Link
           to="/create/upload"
-          className="rounded-md border border-slate-300 bg-white px-8 py-4 font-mono text-slate-700 transition-colors hover:bg-slate-100"
+          className="rounded-md border border-[var(--secondary)] bg-[var(--surface)] px-8 py-4 font-mono text-[var(--text)] transition-colors hover:bg-[var(--surface-hover)]"
         >
           Назад
         </Link>
