@@ -143,25 +143,25 @@ export function TaskCatalog() {
             type="button"
             onClick={() => void finalizeExpired()}
             disabled={loading}
-            className="rounded-md border border-cyan-200 bg-cyan-50 px-8 py-3 text-sm font-mono text-cyan-700 transition-colors hover:bg-cyan-100 disabled:opacity-60"
+            className="rounded-md border border-cyan-500/60 bg-cyan-950/60 px-8 py-3 text-sm font-mono text-cyan-100 transition-colors hover:bg-cyan-900/70 disabled:opacity-60"
           >
             Закрыть просроченные
           </button>
         </div>
       </div>
 
-      <div className="mb-8 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <div className="mb-8 rounded-xl border border-[var(--secondary)] bg-[var(--surface)] p-6 shadow-sm">
         <div className="mb-4 flex items-center gap-4">
-          <Filter className="h-5 w-5 text-indigo-500" />
+          <Filter className="h-5 w-5 text-[var(--accent)]" />
           <span className="text-sm font-mono">Фильтры и сортировка</span>
         </div>
         <div className="grid gap-4 md:grid-cols-3">
           <div>
-            <label className="mb-2 block text-xs font-mono text-slate-500">Дедлайн</label>
+            <label className="mb-2 block text-xs font-mono text-[var(--primary)]">Дедлайн</label>
             <select
               value={deadlineFilter}
               onChange={(event) => setDeadlineFilter(event.target.value as DeadlineFilter)}
-              className="w-full rounded-md border border-slate-300 bg-white p-2 text-sm font-mono text-slate-700 outline-none transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100"
+              className="w-full rounded-md border border-[var(--secondary)] bg-[var(--background)] p-2 text-sm font-mono text-[var(--text)] outline-none transition focus:border-[var(--accent)] focus:ring-2 focus:ring-[var(--surface-hover)]"
             >
               <option value="all">{getDeadlineFilterLabel('all')}</option>
               <option value="expired">{getDeadlineFilterLabel('expired')}</option>
@@ -171,20 +171,20 @@ export function TaskCatalog() {
             </select>
           </div>
           <div>
-            <label className="mb-2 block text-xs font-mono text-slate-500">Сортировка по количеству решений</label>
+            <label className="mb-2 block text-xs font-mono text-[var(--primary)]">Сортировка по количеству решений</label>
             <select
               value={submissionSort}
               onChange={(event) => setSubmissionSort(event.target.value as SubmissionSort)}
-              className="w-full rounded-md border border-slate-300 bg-white p-2 text-sm font-mono text-slate-700 outline-none transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100"
+              className="w-full rounded-md border border-[var(--secondary)] bg-[var(--background)] p-2 text-sm font-mono text-[var(--text)] outline-none transition focus:border-[var(--accent)] focus:ring-2 focus:ring-[var(--surface-hover)]"
             >
               <option value="less-first">Сначала меньше отправленных решений</option>
               <option value="more-first">Сначала больше отправленных решений</option>
             </select>
           </div>
           <div>
-            <label className="mb-2 block text-xs font-mono text-slate-500">Поиск по названию</label>
-            <div className="flex items-center gap-2 rounded-md border border-slate-300 bg-white p-2 text-sm font-mono text-slate-700 outline-none transition focus-within:border-indigo-400 focus-within:ring-2 focus-within:ring-indigo-100">
-              <Search className="h-4 w-4 text-slate-400" />
+            <label className="mb-2 block text-xs font-mono text-[var(--primary)]">Поиск по названию</label>
+            <div className="flex items-center gap-2 rounded-md border border-[var(--secondary)] bg-[var(--background)] p-2 text-sm font-mono text-[var(--text)] outline-none transition focus-within:border-[var(--accent)] focus-within:ring-2 focus-within:ring-[var(--surface-hover)]">
+              <Search className="h-4 w-4 text-[var(--primary)]" />
               <input
                 value={titleSearch}
                 onChange={(event) => setTitleSearch(event.target.value)}
@@ -199,40 +199,40 @@ export function TaskCatalog() {
       <div className="grid gap-6 md:grid-cols-2">
         {filteredTasks.map((task) => (
           <Link key={task.id} to={`/task/${task.id}`}>
-            <div className="cursor-pointer rounded-xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:border-indigo-300 hover:shadow-md">
+            <div className="cursor-pointer rounded-xl border border-[var(--secondary)] bg-[var(--surface)] p-6 shadow-sm transition hover:-translate-y-0.5 hover:border-[var(--accent)] hover:shadow-md">
               <div className="mb-4 flex items-start justify-between gap-4">
                 <div className="flex-1">
-                  <div className="mb-2 text-xs font-mono text-slate-500">Автор: {task.author.username}</div>
+                  <div className="mb-2 text-xs font-mono text-[var(--primary)]">Автор: {task.author.username}</div>
                   <h3 className="mb-2 break-words font-mono text-base">{task.title}</h3>
-                  <div className="text-xs font-mono text-slate-500">Язык: {task.programmingLanguage}</div>
+                  <div className="text-xs font-mono text-[var(--primary)]">Язык: {task.programmingLanguage}</div>
                 </div>
-                <div className="rounded-md border border-amber-300 bg-amber-50 px-3 py-1 text-xs font-mono text-amber-700">
+                <div className="rounded-md border border-amber-700 bg-amber-950 px-3 py-1 text-xs font-mono text-amber-200">
                   {task.platformReward} баллов
                 </div>
               </div>
 
-              <div className="space-y-2 border-t border-slate-200 pt-4">
+              <div className="space-y-2 border-t border-[var(--secondary)] pt-4">
                 <div className="flex justify-between text-xs font-mono">
-                  <span className="text-slate-500">Статус:</span>
+                  <span className="text-[var(--primary)]">Статус:</span>
                   <span>{getStatusLabel(task.status)}</span>
                 </div>
                 <div className="flex justify-between text-xs font-mono">
-                  <span className="text-slate-500">Дедлайн:</span>
+                  <span className="text-[var(--primary)]">Дедлайн:</span>
                   <span>{new Date(task.deadline).toLocaleString()}</span>
                 </div>
                 <div className="flex justify-between text-xs font-mono">
-                  <span className="text-slate-500">Решений:</span>
+                  <span className="text-[var(--primary)]">Решений:</span>
                   <span>{task.submissions.length}</span>
                 </div>
                 <div className="flex justify-between text-xs font-mono">
-                  <span className="text-slate-500">URL репозитория:</span>
+                  <span className="text-[var(--primary)]">URL репозитория:</span>
                   <span className="max-w-[13rem] truncate text-right">{task.repositoryUrl}</span>
                 </div>
-                <div className="pt-1 text-xs font-mono text-slate-500">
+                <div className="pt-1 text-xs font-mono text-[var(--primary)]">
                   {task.description.slice(0, DESCRIPTION_PREVIEW_LENGTH)}
                   {task.description.length > DESCRIPTION_PREVIEW_LENGTH ? '…' : ''}
                 </div>
-                {user?.id === task.author.id && <div className="text-xs font-mono text-indigo-700">Ваша задача</div>}
+                {user?.id === task.author.id && <div className="text-xs font-mono text-[var(--accent)]">Ваша задача</div>}
               </div>
             </div>
           </Link>
@@ -240,7 +240,7 @@ export function TaskCatalog() {
       </div>
 
       {filteredTasks.length === 0 && (
-        <div className="rounded-xl border border-slate-200 bg-white p-8 text-center font-mono text-sm shadow-sm">
+        <div className="rounded-xl border border-[var(--secondary)] bg-[var(--surface)] p-8 text-center font-mono text-sm shadow-sm">
           По выбранным параметрам задачи не найдены.
         </div>
       )}

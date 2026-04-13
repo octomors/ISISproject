@@ -15,7 +15,7 @@ export function SubmissionScreen() {
   if (!id || !task) {
     return (
       <div className="mx-auto max-w-4xl px-8 py-12">
-        <div className="border-2 border-gray-800 bg-white p-8 font-mono">Задача не найдена.</div>
+        <div className="border-2 border-[var(--secondary)] bg-[var(--surface)] p-8 font-mono">Задача не найдена.</div>
       </div>
     )
   }
@@ -44,7 +44,7 @@ export function SubmissionScreen() {
 
   return (
     <div className="mx-auto max-w-4xl px-8 py-12">
-      <div className="mb-6 text-xs font-mono text-slate-500">
+      <div className="mb-6 text-xs font-mono text-[var(--primary)]">
         <Link to="/" className="hover:underline">
           Каталог
         </Link>{' '}
@@ -56,17 +56,17 @@ export function SubmissionScreen() {
         / Отправка решения
       </div>
 
-      <div className="mb-8 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <div className="mb-8 rounded-xl border border-[var(--secondary)] bg-[var(--surface)] p-6 shadow-sm">
         <div className="flex items-center justify-between gap-4">
           <div>
-            <div className="mb-1 text-xs font-mono text-slate-500">Задача</div>
+            <div className="mb-1 text-xs font-mono text-[var(--primary)]">Задача</div>
             <div className="font-mono">{task.title}</div>
           </div>
-          <div className="text-xs font-mono text-slate-500">Дедлайн: {new Date(task.deadline).toLocaleString()}</div>
+          <div className="text-xs font-mono text-[var(--primary)]">Дедлайн: {new Date(task.deadline).toLocaleString()}</div>
         </div>
       </div>
 
-      <div className="mb-6 rounded-xl border border-slate-200 bg-white p-8 shadow-sm">
+      <div className="mb-6 rounded-xl border border-[var(--secondary)] bg-[var(--surface)] p-8 shadow-sm">
         <h1 className="mb-6 text-xl font-mono">Отправка решения</h1>
 
         <div className="mb-6">
@@ -80,7 +80,7 @@ export function SubmissionScreen() {
             required
             aria-required="true"
             aria-label="URL репозитория решения, обязательное поле"
-            className="w-full rounded-md border border-slate-300 bg-white p-4 font-mono text-sm outline-none transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100"
+            className="w-full rounded-md border border-[var(--secondary)] bg-[var(--background)] p-4 font-mono text-sm text-[var(--text)] outline-none transition focus:border-[var(--accent)] focus:ring-2 focus:ring-[var(--surface-hover)]"
             placeholder="https://github.com/username/repo"
           />
         </div>
@@ -94,11 +94,11 @@ export function SubmissionScreen() {
             value={description}
             onChange={(event) => setDescription(event.target.value)}
             aria-describedby="submission-description-hint"
-            className="min-h-28 w-full rounded-md border border-slate-300 bg-white p-4 font-mono text-sm outline-none transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100"
+            className="min-h-28 w-full rounded-md border border-[var(--secondary)] bg-[var(--background)] p-4 font-mono text-sm text-[var(--text)] outline-none transition focus:border-[var(--accent)] focus:ring-2 focus:ring-[var(--surface-hover)]"
             placeholder="Кратко опишите подход и ключевые изменения"
             maxLength={3000}
           />
-          <div id="submission-description-hint" className="mt-2 text-xs font-mono text-slate-500">
+          <div id="submission-description-hint" className="mt-2 text-xs font-mono text-[var(--primary)]">
             До 3000 символов.
           </div>
         </div>
@@ -114,15 +114,15 @@ export function SubmissionScreen() {
       </div>
 
       {status !== 'idle' && (
-        <div className="rounded-xl border border-slate-200 bg-white p-8 shadow-sm">
+        <div className="rounded-xl border border-[var(--secondary)] bg-[var(--surface)] p-8 shadow-sm">
           <h2 className="mb-4 text-lg font-mono">Статус</h2>
           <div className="space-y-3">
-            <div className="flex items-center gap-3 rounded-lg border border-slate-200 bg-slate-50 p-4">
+            <div className="flex items-center gap-3 rounded-lg border border-[var(--secondary)] bg-[var(--background)] p-4">
               {status === 'uploading' ? <Clock className="h-6 w-6 animate-pulse" /> : <CheckCircle className="h-6 w-6" />}
               <div className="font-mono text-sm">Проверка и регистрация ссылки на решение</div>
             </div>
             {status === 'success' && (
-              <div className="flex items-center gap-3 rounded-lg border border-emerald-200 bg-emerald-50 p-4">
+              <div className="flex items-center gap-3 rounded-lg border border-emerald-500/60 bg-emerald-950/60 p-4">
                 <CheckCircle className="h-6 w-6" />
                 <div className="font-mono text-sm">Решение принято, возврат на страницу задачи…</div>
               </div>
