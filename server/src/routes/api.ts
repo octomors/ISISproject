@@ -152,6 +152,11 @@ export function registerApiRoutes(app: Express) {
         return
       }
 
+      if (description.length > 3000) {
+        res.status(400).json({ error: 'description must be at most 3000 characters' })
+        return
+      }
+
       if (deadline <= new Date()) {
         res.status(400).json({ error: 'deadline must be in the future' })
         return
@@ -208,6 +213,7 @@ export function registerApiRoutes(app: Express) {
 
       const taskId = req.params.taskId
       const repositoryUrl = typeof req.body.repositoryUrl === 'string' ? req.body.repositoryUrl.trim() : ''
+      const description = typeof req.body.description === 'string' ? req.body.description.trim() : ''
 
       if (!repositoryUrl) {
         res.status(400).json({ error: 'repositoryUrl is required' })
@@ -216,6 +222,11 @@ export function registerApiRoutes(app: Express) {
 
       if (!isValidRepositoryUrl(repositoryUrl)) {
         res.status(400).json({ error: 'repositoryUrl must be a valid repository link' })
+        return
+      }
+
+      if (description.length > 3000) {
+        res.status(400).json({ error: 'description must be at most 3000 characters' })
         return
       }
 
@@ -235,7 +246,7 @@ export function registerApiRoutes(app: Express) {
         return
       }
 
-      await Submission.create({ task: task._id, author: req.userId, repositoryUrl })
+      await Submission.create({ task: task._id, author: req.userId, repositoryUrl, description })
       const taskView = await buildTaskView(task._id, req.userId)
 
       res.status(201).json({ task: taskView })
