@@ -5,6 +5,7 @@ import { requireAuth, withOptionalAuth } from '../middleware/auth'
 import { authRateLimiter } from '../middleware/rateLimits'
 import { Submission, Task, User, Vote } from '../models'
 import { buildToken, toPublicUser } from '../services/authService'
+import { createHubSpotDeal } from '../services/hubspotService'
 import { buildTaskView, finalizeExpiredTasks, isTaskAcceptingActivity } from '../services/taskService'
 import type { AuthRequest } from '../types/http'
 
@@ -187,8 +188,27 @@ export function registerApiRoutes(app: Express) {
         platformReward: config.PLATFORM_REWARD,
       })
 
+      let hubspotDealId: string | null = null
+      try {
+        const deal = await createHubSpotDeal({
+          title,
+          programmingLanguage,
+          repositoryUrl,
+          description,
+          deadline,
+          publishCost: config.PUBLISH_COST,
+          platformReward: config.PLATFORM_REWARD,
+          authorEmail: user.email,
+        })
+        hubspotDealId = deal.id
+        task.hubspotDealId = hubspotDealId
+        await task.save()
+      } catch (hubspotError) {
+        console.error('failed to create HubSpot deal', hubspotError)
+      }
+
       const taskView = await buildTaskView(task._id, req.userId)
-      res.status(201).json({ task: taskView, user: toPublicUser(user) })
+      res.status(201).json({ task: taskView, user: toPublicUser(user), hubspotDealId })
     } catch (error) {
       sendInternalError(res, 'failed to create task', error)
     }

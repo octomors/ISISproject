@@ -25,6 +25,7 @@ const taskSchema = new Schema(
     winnerSubmission: { type: Schema.Types.ObjectId, ref: 'Submission', default: null },
     winnerUser: { type: Schema.Types.ObjectId, ref: 'User', default: null },
     rewardIssued: { type: Boolean, default: false },
+    hubspotDealId: { type: String, default: null },
   },
   { timestamps: true },
 )
